@@ -21,6 +21,8 @@ const Template: Story<OverflowListProps<string>> = (args) => (
 export const Default = Template.bind({});
 
 Default.args = {
+  collapseFrom: 'end',
+  minVisibleItems: 0,
   items: [
     'Apple',
     'Mango',
@@ -32,4 +34,14 @@ Default.args = {
     'Lemon',
     'Jackfruit',
   ],
+  overflowRenderer: (items) => {
+    return <span>+ {items.length} more</span>;
+  },
+  itemRenderer: (item, index) => {
+    return (
+      <span style={{ marginRight: 8 }} key={index}>
+        {item}
+      </span>
+    );
+  },
 };
