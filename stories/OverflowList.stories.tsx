@@ -35,11 +35,31 @@ Default.args = {
     'Jackfruit',
   ],
   overflowRenderer: (items) => {
-    return <span>+ {items.length} more</span>;
+    return (
+      <span
+        style={{
+          padding: 4,
+          background: 'tomato',
+          color: 'white',
+          fontFamily: 'sans-serif',
+        }}
+      >
+        + {items.length} more
+      </span>
+    );
   },
   itemRenderer: (item, index) => {
     return (
-      <span style={{ marginRight: 8 }} key={index}>
+      <span
+        style={{
+          marginRight: 8,
+          padding: 4,
+          background: 'cornflowerblue',
+          color: 'white',
+          fontFamily: 'sans-serif',
+        }}
+        key={index}
+      >
         {item}
       </span>
     );
