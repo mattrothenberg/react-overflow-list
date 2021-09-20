@@ -2,6 +2,7 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import { Resizable } from 're-resizable';
 import { MdDragHandle } from 'react-icons/md';
+import * as Popover from '@radix-ui/react-popover';
 import { OverflowList, OverflowListProps } from '../src';
 
 const meta: Meta = {
@@ -38,7 +39,7 @@ const Template: Story<OverflowListProps<string>> = (args) => {
             </div>
           ),
         }}
-        className="border border-gray-200 py-2 pl-2 overflow-hidden pr-4 bg-white"
+        className="border border-gray-200 py-2 pl-2 pr-4 bg-white"
       >
         <OverflowList {...args} />
       </Resizable>
@@ -66,17 +67,30 @@ Default.args = {
   ],
   overflowRenderer: (items) => {
     return (
-      <div>
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 whitespace-nowrap">
+      <Popover.Root>
+        <Popover.Trigger className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800 whitespace-nowrap">
           + {items.length} more
-        </span>
-      </div>
+        </Popover.Trigger>
+        <Popover.Anchor />
+        <Popover.Content className="bg-white border border-gray-200 shadow-lg w-64 p-2 rounded-lg flex flex-col space-y-2">
+          {items.map((item, index) => {
+            return (
+              <div key={index}>
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800">
+                  {item}
+                </span>
+              </div>
+            );
+          })}
+          <Popover.Arrow fill="white" />
+        </Popover.Content>
+      </Popover.Root>
     );
   },
   itemRenderer: (item, index) => {
     return (
       <div className="mr-2" key={index}>
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800">
           {item}
         </span>
       </div>
