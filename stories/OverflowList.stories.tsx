@@ -36,32 +36,35 @@ Default.args = {
   ],
   overflowRenderer: (items) => {
     return (
-      <span
-        style={{
-          padding: 4,
-          background: 'tomato',
-          color: 'white',
-          fontFamily: 'sans-serif',
-        }}
-      >
-        + {items.length} more
-      </span>
+      <div>
+        <span
+          style={{
+            padding: 4,
+            background: 'tomato',
+            color: 'white',
+            fontFamily: 'sans-serif',
+          }}
+        >
+          + {items.length} more
+        </span>
+      </div>
     );
   },
   itemRenderer: (item, index) => {
     return (
-      <span
-        style={{
-          marginRight: 8,
-          padding: 4,
-          background: 'cornflowerblue',
-          color: 'white',
-          fontFamily: 'sans-serif',
-        }}
-        key={index}
-      >
-        {item}
-      </span>
+      <div key={index}>
+        <span
+          style={{
+            marginRight: 8,
+            padding: 4,
+            background: 'cornflowerblue',
+            color: 'white',
+            fontFamily: 'sans-serif',
+          }}
+        >
+          {item}
+        </span>
+      </div>
     );
   },
 };

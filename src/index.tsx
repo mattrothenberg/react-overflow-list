@@ -1,6 +1,10 @@
 import React from 'react';
-import useResizeObserver from 'use-resize-observer';
-import { useDeepCompareEffect, useMount } from 'react-use';
+import {
+  useDeepCompareEffect,
+  useMount,
+  useMeasure,
+  usePrevious,
+} from 'react-use';
 
 type CollapseDirection = 'start' | 'end';
 type OverflowDirection = 'none' | 'grow' | 'shrink';
@@ -43,7 +47,6 @@ export function OverflowList<T>(props: OverflowListProps<T>) {
   });
 
   const spacer = React.useRef<HTMLDivElement>(null);
-  const previousWidth = React.useRef<number>();
 
   useDeepCompareEffect(() => {
     repartition(false);
@@ -51,17 +54,6 @@ export function OverflowList<T>(props: OverflowListProps<T>) {
 
   useMount(() => {
     repartition(false);
-  });
-
-  const { ref } = useResizeObserver({
-    onResize: ({ width = 0 }) => {
-      const growing =
-        typeof previousWidth.current === 'undefined' ||
-        width > previousWidth.current;
-
-      repartition(growing);
-      previousWidth.current = width;
-    },
   });
 
   const WrapperComponent = tagName;
@@ -94,7 +86,7 @@ export function OverflowList<T>(props: OverflowListProps<T>) {
         const collapseFromStart = collapseFrom === 'start';
         const visible = state.visible.slice();
         const next = collapseFromStart ? visible.shift() : visible.pop();
-        if (next === undefined) {
+        if (!next) {
           return state;
         }
         const overflow = collapseFromStart
@@ -116,6 +108,15 @@ export function OverflowList<T>(props: OverflowListProps<T>) {
       });
     }
   };
+
+  const [ref, { width }] = useMeasure<HTMLDivElement>();
+  const previousWidth = usePrevious(width);
+
+  React.useEffect(() => {
+    if (!previousWidth) return;
+
+    repartition(width > previousWidth);
+  }, [width, previousWidth]);
 
   return (
     <>
