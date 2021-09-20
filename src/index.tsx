@@ -1,9 +1,9 @@
 import React from 'react';
 import {
-  useDeepCompareEffect,
   useMount,
   useMeasure,
   usePrevious,
+  useShallowCompareEffect,
 } from 'react-use';
 
 type CollapseDirection = 'start' | 'end';
@@ -48,7 +48,7 @@ export function OverflowList<T>(props: OverflowListProps<T>) {
 
   const spacer = React.useRef<HTMLDivElement>(null);
 
-  useDeepCompareEffect(() => {
+  useShallowCompareEffect(() => {
     repartition(false);
   }, [state]);
 
