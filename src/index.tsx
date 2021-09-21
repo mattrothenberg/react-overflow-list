@@ -31,7 +31,7 @@ interface OverflowListState<T> {
 export function OverflowList<T>(props: OverflowListProps<T>) {
   const {
     items,
-    collapseFrom = 'start',
+    collapseFrom = 'end',
     minVisibleItems = 0,
     tagName = 'div',
     className = '',
@@ -109,7 +109,7 @@ export function OverflowList<T>(props: OverflowListProps<T>) {
     }
   };
 
-  const [ref, { width }] = useMeasure<HTMLDivElement>();
+  const [ref, { width }] = useMeasure<any>();
   const previousWidth = usePrevious(width);
 
   React.useEffect(() => {
@@ -119,22 +119,20 @@ export function OverflowList<T>(props: OverflowListProps<T>) {
   }, [width, previousWidth]);
 
   return (
-    <>
-      <div ref={ref}>
-        <WrapperComponent
-          className={className}
-          style={{
-            display: 'flex',
-            flexWrap: 'nowrap',
-            minWidth: 0,
-          }}
-        >
-          {collapseFrom === 'start' ? maybeOverflow : null}
-          {state.visible.map(itemRenderer)}
-          {collapseFrom === 'end' ? maybeOverflow : null}
-          <div style={{ flexShrink: 1, width: 1 }} ref={spacer} />
-        </WrapperComponent>
-      </div>
-    </>
+    <WrapperComponent
+      // @ts-ignore
+      ref={ref}
+      className={className}
+      style={{
+        display: 'flex',
+        flexWrap: 'nowrap',
+        minWidth: 0,
+      }}
+    >
+      {collapseFrom === 'start' ? maybeOverflow : null}
+      {state.visible.map(itemRenderer)}
+      {collapseFrom === 'end' ? maybeOverflow : null}
+      <div style={{ flexShrink: 1, width: 1 }} ref={spacer} />
+    </WrapperComponent>
   );
 }
