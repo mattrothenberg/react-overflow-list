@@ -61,6 +61,8 @@
     "@types/react-dom": "^17.0.9",
     "autoprefixer": "^10.3.4",
     "babel-loader": "^8.2.2",
+    "boring-avatars": "^1.5.8",
+    "faker": "^5.5.3",
     "husky": "^7.0.2",
     "postcss": "^8.3.6",
     "re-resizable": "^6.9.1",
