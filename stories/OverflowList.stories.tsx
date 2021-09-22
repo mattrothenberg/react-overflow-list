@@ -3,6 +3,8 @@ import { Meta, Story } from '@storybook/react';
 import { Resizable } from 're-resizable';
 import { MdDragHandle } from 'react-icons/md';
 import * as Popover from '@radix-ui/react-popover';
+import BoringAvatar from 'boring-avatars';
+import faker from 'faker';
 import { OverflowList, OverflowListProps } from '../src';
 
 const meta: Meta = {
@@ -15,13 +17,12 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story<OverflowListProps<string>> = (args) => {
+const ResizableBox: React.FC = ({ children }) => {
   return (
     <div className="bg-gray-700">
       <Resizable
         defaultSize={{ width: 200, height: 'auto' }}
         maxWidth="100%"
-        minWidth={64}
         enable={{
           right: true,
         }}
@@ -39,21 +40,27 @@ const Template: Story<OverflowListProps<string>> = (args) => {
             </div>
           ),
         }}
-        className="border border-gray-200 py-2 pl-2 pr-4 bg-white"
+        className="border border-gray-200 py-2 pl-2 pr-4 bg-white overflow-hidden flex-shrink-0"
       >
-        <OverflowList {...args} />
+        {children}
       </Resizable>
     </div>
   );
 };
 
-// By passing using the Args format for exported stories, you can control the props for a component for reuse in a test
-// https://storybook.js.org/docs/react/workflows/unit-testing
+const Template: Story<OverflowListProps<string>> = (args) => {
+  return (
+    <ResizableBox>
+      <OverflowList {...args} />
+    </ResizableBox>
+  );
+};
+
 export const Default = Template.bind({});
 
 Default.args = {
   collapseFrom: 'end',
-  minVisibleItems: 0,
+  minVisibleItems: 1,
   items: [
     'Apple',
     'Mango',
@@ -93,6 +100,39 @@ Default.args = {
         <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800">
           {item}
         </span>
+      </div>
+    );
+  },
+};
+
+function makeRandomNames(size = 10) {
+  let arr = [];
+  for (var i = 0; i < size; i++) {
+    arr.push(faker.name.findName());
+  }
+  return arr;
+}
+
+const randomNames = makeRandomNames(10);
+
+export const Avatar = Template.bind({});
+Avatar.args = {
+  items: randomNames,
+  minVisibleItems: 1,
+  itemRenderer: (item, index) => {
+    return (
+      <div
+        key={index}
+        className="flex-shrink-0 -ml-1 ring-4 ring-white rounded-full"
+      >
+        <BoringAvatar size={40} variant="beam" name={item} />
+      </div>
+    );
+  },
+  overflowRenderer: (items) => {
+    return (
+      <div className="flex-shrink-0 rounded-full w-[40px] h-[40px] bg-gray-200 flex items-center justify-center ml-2 text-xs font-bold text-gray-700">
+        + {items.length}
       </div>
     );
   },
