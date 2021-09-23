@@ -3054,6 +3054,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-tagsinput@^3.19.8":
+  version "3.19.8"
+  resolved "https://registry.yarnpkg.com/@types/react-tagsinput/-/react-tagsinput-3.19.8.tgz#89cae8995c1e15f611f65cfb29c5fb9c527c11c4"
+  integrity sha512-SUcQ5n65D+FclSzktdWnpaITijXqbe4QdICCOrA+nN8rfj6KfkK0vR7RHEGtlgjQy/ZCaNxaof3Y2kLXnM2b3w==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-textarea-autosize@^4.3.3":
   version "4.3.6"
   resolved "https://registry.yarnpkg.com/@types/react-textarea-autosize/-/react-textarea-autosize-4.3.6.tgz#f56f7b41aee9fb0310b6e32a8d2a77eb9a5893db"
@@ -4646,6 +4653,11 @@ class-utils@^0.3.5:
     define-property "^0.2.5"
     isobject "^3.0.0"
     static-extend "^0.1.1"
+
+classcat@^5.0.3:
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/classcat/-/classcat-5.0.3.tgz#38eaa0ec6eb1b10faf101bbcef2afb319c23c17b"
+  integrity sha512-6dK2ke4VEJZOFx2ZfdDAl5OhEL8lvkl6EHF92IfRePfHxQTqir5NlcNVUv+2idjDqCX2NDc8m8YSAI5NI975ZQ==
 
 clean-css@^4.2.3:
   version "4.2.3"
@@ -11315,6 +11327,11 @@ react-syntax-highlighter@^13.5.3:
     lowlight "^1.14.0"
     prismjs "^1.21.0"
     refractor "^3.1.0"
+
+react-tagsinput@^3.19.0:
+  version "3.19.0"
+  resolved "https://registry.yarnpkg.com/react-tagsinput/-/react-tagsinput-3.19.0.tgz#6e3b45595f2d295d4657bf194491988f948caabf"
+  integrity sha512-ni+/qnZrYrvLg83LtTFHErKy1KQHL0fi0Y6C5jgC1dNUePE9cS/OlQ4XH6JRSjv9GGoeVE0R/ujSBaS1uzCRYQ==
 
 react-textarea-autosize@^7.1.0:
   version "7.1.2"
