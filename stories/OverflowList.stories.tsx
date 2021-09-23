@@ -164,7 +164,7 @@ const Chip: React.FC<TagsInput.RenderTagProps<string>> = ({
         <button
           type="button"
           disabled={disabled}
-          onClick={() => {
+          onClick={(e) => {
             onRemove(key);
           }}
           className="flex-shrink-0 ml-0.5 h-4 w-4 rounded-full inline-flex items-center justify-center text-pink-400 hover:bg-pink-200 hover:text-pink-500 focus:outline-none focus:bg-pink-500 focus:text-white"
@@ -205,7 +205,11 @@ const ChipLayout: React.FC<{
     <div
       tabIndex={0}
       ref={ref}
-      onFocus={() => {
+      onFocus={(e) => {
+        if (e.target.nodeName === 'BUTTON') {
+          e.stopPropagation();
+          return;
+        }
         setIsOpen(true);
       }}
       className={cc('')}
@@ -264,21 +268,16 @@ const ChipInput = React.forwardRef<
   HTMLInputElement,
   TagsInput.RenderInputProps<string>
 >((props, ref) => {
-  const { isOpen, setIsOpen } = React.useContext(TagInputContext);
   const { onChange, value, addTag, ...other } = props;
-  const inputClass = isOpen
-    ? 'focus:outline-none'
-    : 'absolute inset-0 w-full h-full bg-transparent';
 
   return (
     <input
       {...other}
+      className="focus:outline-none"
       autoFocus
-      className={inputClass}
-      onFocus={() => setIsOpen(true)}
       ref={ref}
       type="text"
-      placeholder={isOpen ? 'Add a tag' : ''}
+      placeholder="Add a fruit"
       onChange={onChange}
       value={value}
     />
