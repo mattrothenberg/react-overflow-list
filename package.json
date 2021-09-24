@@ -39,10 +39,6 @@
   "module": "dist/react-overflow-list.esm.js",
   "size-limit": [
     {
-      "path": "dist/react-overflow-list.cjs.production.min.js",
-      "limit": "10 KB"
-    },
-    {
       "path": "dist/react-overflow-list.esm.js",
       "limit": "10 KB"
     }
@@ -59,9 +55,11 @@
     "@storybook/react": "^6.3.8",
     "@types/react": "^17.0.21",
     "@types/react-dom": "^17.0.9",
+    "@types/react-tagsinput": "^3.19.8",
     "autoprefixer": "^10.3.4",
     "babel-loader": "^8.2.2",
     "boring-avatars": "^1.5.8",
+    "classcat": "^5.0.3",
     "faker": "^5.5.3",
     "husky": "^7.0.2",
     "postcss": "^8.3.6",
@@ -70,6 +68,7 @@
     "react-dom": "^17.0.2",
     "react-icons": "^4.2.0",
     "react-is": "^17.0.2",
+    "react-tagsinput": "^3.19.0",
     "size-limit": "^5.0.3",
     "tailwindcss": "^2.2.15",
     "tsdx": "^0.14.1",

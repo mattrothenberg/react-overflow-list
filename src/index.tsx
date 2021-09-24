@@ -4,6 +4,7 @@ import {
   useMeasure,
   usePrevious,
   useShallowCompareEffect,
+  useUpdateEffect,
 } from 'react-use';
 
 type CollapseDirection = 'start' | 'end';
@@ -55,6 +56,15 @@ export function OverflowList<T>(props: OverflowListProps<T>) {
   useMount(() => {
     repartition(false);
   });
+
+  useUpdateEffect(() => {
+    setState(() => ({
+      overflowDirection: 'none',
+      lastOverflowCount: 0,
+      overflow: [],
+      visible: items,
+    }));
+  }, [items]);
 
   const WrapperComponent = tagName;
 
