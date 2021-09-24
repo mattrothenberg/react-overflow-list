@@ -39,10 +39,6 @@
   "module": "dist/react-overflow-list.esm.js",
   "size-limit": [
     {
-      "path": "dist/react-overflow-list.cjs.production.min.js",
-      "limit": "10 KB"
-    },
-    {
       "path": "dist/react-overflow-list.esm.js",
       "limit": "10 KB"
     }
