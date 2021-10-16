@@ -20,6 +20,7 @@ export interface OverflowListProps<T> {
   className?: string;
   tagName?: keyof JSX.IntrinsicElements;
   alwaysRenderOverflow?: boolean;
+  style?: React.CSSProperties;
 }
 
 interface OverflowListState<T> {
@@ -39,6 +40,7 @@ export function OverflowList<T>(props: OverflowListProps<T>) {
     alwaysRenderOverflow = false,
     overflowRenderer,
     itemRenderer,
+    style
   } = props;
   const [state, setState] = React.useState<OverflowListState<T>>({
     visible: items,
@@ -122,6 +124,12 @@ export function OverflowList<T>(props: OverflowListProps<T>) {
   const [ref, { width }] = useMeasure<any>();
   const previousWidth = usePrevious(width);
 
+  const wrapperStyle = Object.assign({}, style, {
+    display: 'flex',
+    flexWrap: 'nowrap',
+    minWidth: 0,
+  });
+  
   React.useEffect(() => {
     if (!previousWidth) return;
 
@@ -133,11 +141,7 @@ export function OverflowList<T>(props: OverflowListProps<T>) {
       // @ts-ignore
       ref={ref}
       className={className}
-      style={{
-        display: 'flex',
-        flexWrap: 'nowrap',
-        minWidth: 0,
-      }}
+      style={wrapperStyle}
     >
       {collapseFrom === 'start' ? maybeOverflow : null}
       {state.visible.map(itemRenderer)}
