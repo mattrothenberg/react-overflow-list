@@ -1,0 +1,28 @@
+name: Release
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+  id-token: write # npm provenance + trusted publishing
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+      # Uses npm Trusted Publishing (OIDC). Configure once on npmjs.com under
+      # the package's Settings -> Trusted Publisher, pointing at this repo and
+      # the "release.yml" workflow. No NPM_TOKEN secret is needed.
+      - run: npm publish --provenance --access public

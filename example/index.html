@@ -1,14 +1,51 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Playground</title>
+    <title>react-overflow-list playground</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 2rem;
+        color: #222;
+      }
+      h2 {
+        font-size: 1rem;
+        margin: 2rem 0 0.5rem;
+      }
+      .box {
+        resize: horizontal;
+        overflow: hidden;
+        width: 420px;
+        min-width: 60px;
+        max-width: 100%;
+        padding: 8px;
+        border: 2px dashed #999;
+        border-radius: 6px;
+        background: #f6f6f6;
+      }
+      .item,
+      .more {
+        display: inline-block;
+        white-space: nowrap;
+        padding: 4px 10px;
+        margin-right: 6px;
+        border-radius: 999px;
+        background: #dde9ff;
+      }
+      .more {
+        background: #222;
+        color: #fff;
+      }
+      .hint {
+        color: #666;
+        font-size: 0.85rem;
+      }
+    </style>
   </head>
-
   <body>
     <div id="root"></div>
-    <script src="./index.tsx"></script>
+    <script type="module" src="./main.tsx"></script>
   </body>
 </html>

@@ -5,7 +5,7 @@ import {
   usePrevious,
   useShallowCompareEffect,
   useUpdateEffect,
-} from 'react-use';
+} from './hooks';
 
 type CollapseDirection = 'start' | 'end';
 type OverflowDirection = 'none' | 'grow' | 'shrink';
