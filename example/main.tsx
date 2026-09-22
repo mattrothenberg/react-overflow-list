@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { OverflowList } from '../src';
 
 const fruits = [
@@ -89,4 +89,4 @@ function App() {
   );
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+createRoot(document.getElementById('root')!).render(<App />);

@@ -43,7 +43,10 @@ const HandleComponent = () => {
   );
 };
 
-const ResizableBox: React.FC<ResizableProps> = ({ children, ...rest }) => {
+const ResizableBox: React.FC<React.PropsWithChildren<ResizableProps>> = ({
+  children,
+  ...rest
+}) => {
   return (
     <div className="bg-gray-700">
       <Resizable
@@ -254,7 +257,7 @@ const TagInputContext = React.createContext<TagInputContext>({
   setIsOpen: () => {},
 });
 
-const TagInputProvider: React.FC = ({ children }) => {
+const TagInputProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (

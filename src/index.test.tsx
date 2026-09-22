@@ -1,6 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { act } from 'react-dom/test-utils';
+import React, { act } from 'react';
+import { createRoot } from 'react-dom/client';
 import { OverflowList } from './index';
 
 const items = ['Apple', 'Banana', 'Orange', 'Pear'];
@@ -8,17 +7,20 @@ const items = ['Apple', 'Banana', 'Orange', 'Pear'];
 function mount(ui: React.ReactElement) {
   const container = document.createElement('div');
   document.body.appendChild(container);
+  const root = createRoot(container);
   act(() => {
-    ReactDOM.render(ui, container);
+    root.render(ui);
   });
   return {
     container,
     rerender: (next: React.ReactElement) =>
       act(() => {
-        ReactDOM.render(next, container);
+        root.render(next);
       }),
     unmount: () => {
-      ReactDOM.unmountComponentAtNode(container);
+      act(() => {
+        root.unmount();
+      });
       container.remove();
     },
   };

@@ -18,7 +18,7 @@ export interface OverflowListProps<T> {
   onOverflow?: (items: T[]) => void;
   collapseFrom?: CollapseDirection;
   className?: string;
-  tagName?: keyof JSX.IntrinsicElements;
+  tagName?: keyof React.JSX.IntrinsicElements;
   alwaysRenderOverflow?: boolean;
 }
 

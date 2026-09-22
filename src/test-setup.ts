@@ -6,3 +6,4 @@ class ResizeObserverStub {
   disconnect() {}
 }
 (globalThis as any).ResizeObserver = ResizeObserverStub;
+(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;

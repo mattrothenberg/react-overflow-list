@@ -51,7 +51,7 @@ export const useUpdateEffect = (
 
 // react-use/usePrevious
 export function usePrevious<T>(state: T): T | undefined {
-  const ref = useRef<T>();
+  const ref = useRef<T>(undefined);
   useEffect(() => {
     ref.current = state;
   });
