@@ -10,6 +10,9 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    # Protected environment: configure required reviewers in
+    # GitHub -> Settings -> Environments -> npm so a publish waits for approval.
+    environment: npm
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
