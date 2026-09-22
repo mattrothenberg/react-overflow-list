@@ -8,7 +8,6 @@
     "type": "git",
     "url": "git+https://github.com/mattrothenberg/react-overflow-list.git"
   },
-  "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.cts",
@@ -50,7 +49,8 @@
     "prepublishOnly": "pnpm run typecheck && pnpm run test && pnpm run build",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "example": "vite example --open"
+    "example": "vite example --open",
+    "example:build": "vite build example"
   },
   "peerDependencies": {
     "react": ">=16.8"
