@@ -1,0 +1,10 @@
+# Refuse to resolve any dependency version published less than 3 days ago.
+# Supply-chain worms (Shai-Hulud etc.) are usually detected and unpublished
+# within hours, so this keeps freshly-poisoned releases out of the tree.
+# Applies to resolution and to verifying the committed lockfile on install.
+minimumReleaseAge: 4320
+
+# Dependencies with install scripts. esbuild's postinstall only validates its
+# binary and is not required, so we deliberately leave it off.
+allowBuilds:
+  esbuild: false
