@@ -1,14 +1,10 @@
-allowBuilds:
-  esbuild: set this to true or false
 # Refuse to resolve any dependency version published less than 3 days ago.
 # Supply-chain worms (Shai-Hulud etc.) are usually detected and unpublished
 # within hours, so this keeps freshly-poisoned releases out of the tree.
-# Only affects resolution (updates / new installs), not frozen-lockfile installs.
+# Applies to resolution and to verifying the committed lockfile on install.
 minimumReleaseAge: 4320
 
-# Dependencies whose install scripts we deliberately do not run.
-ignoredBuiltDependencies:
-  - core-js
-  - core-js-pure
-  - esbuild
-  - highlight.js
+# Dependencies with install scripts. esbuild's postinstall only validates its
+# binary and is not required, so we deliberately leave it off.
+allowBuilds:
+  esbuild: false
