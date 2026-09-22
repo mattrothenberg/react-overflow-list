@@ -1,6 +1,6 @@
 {
   "name": "react-overflow-list",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "A hooks-based, dependency-free port of the Blueprint OverflowList component.",
   "author": "Matt Rothenberg",
   "license": "MIT",
