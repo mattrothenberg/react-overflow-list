@@ -10,22 +10,24 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    # Protected environment: configure required reviewers in
-    # GitHub -> Settings -> Environments -> npm so a publish waits for approval.
+    # Protected environment: required reviewers are configured in
+    # GitHub -> Settings -> Environments -> npm, so this job waits for approval.
     environment: npm
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: pnpm
           registry-url: https://registry.npmjs.org
+      # `npm stage` needs npm 12+
+      - run: npm install -g npm@12
       - run: pnpm install --frozen-lockfile
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm build
-      # Uses npm Trusted Publishing (OIDC). Configure once on npmjs.com under
-      # the package's Settings -> Trusted Publisher, pointing at this repo and
-      # the "release.yml" workflow. No NPM_TOKEN secret is needed.
-      - run: npm publish --provenance --access public
+      # Staged publish via npm Trusted Publishing (OIDC): this only uploads a
+      # candidate. Nothing goes live until it is approved with 2FA on
+      # npmjs.com (or `npm stage approve <stage-id>` locally).
+      - run: npm stage publish . --provenance --access public
