@@ -5,7 +5,7 @@ import {
   usePrevious,
   useShallowCompareEffect,
   useUpdateEffect,
-} from 'react-use';
+} from './hooks';
 
 type CollapseDirection = 'start' | 'end';
 type OverflowDirection = 'none' | 'grow' | 'shrink';
@@ -18,7 +18,7 @@ export interface OverflowListProps<T> {
   onOverflow?: (items: T[]) => void;
   collapseFrom?: CollapseDirection;
   className?: string;
-  tagName?: keyof JSX.IntrinsicElements;
+  tagName?: keyof React.JSX.IntrinsicElements;
   alwaysRenderOverflow?: boolean;
 }
 

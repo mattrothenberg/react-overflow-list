@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Meta, Story } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 import { Resizable, ResizableProps } from 're-resizable';
 import { MdDragHandle } from 'react-icons/md';
 
-import * as Popover from '@radix-ui/react-popover';
+import { Popover } from '@base-ui/react/popover';
 import BoringAvatar from 'boring-avatars';
 import faker from 'faker';
 import TagsInput from 'react-tagsinput';
@@ -43,7 +43,10 @@ const HandleComponent = () => {
   );
 };
 
-const ResizableBox: React.FC<ResizableProps> = ({ children, ...rest }) => {
+const ResizableBox: React.FC<React.PropsWithChildren<ResizableProps>> = ({
+  children,
+  ...rest
+}) => {
   return (
     <div className="bg-gray-700">
       <Resizable
@@ -61,7 +64,7 @@ const ResizableBox: React.FC<ResizableProps> = ({ children, ...rest }) => {
         handleComponent={{
           right: <HandleComponent />,
         }}
-        className="border border-gray-200 py-2 pl-2 pr-4 bg-white overflow-hidden flex-shrink-0"
+        className="border border-gray-200 py-2 pl-2 pr-4 bg-white overflow-hidden shrink-0"
       >
         {children}
       </Resizable>
@@ -69,7 +72,7 @@ const ResizableBox: React.FC<ResizableProps> = ({ children, ...rest }) => {
   );
 };
 
-const Template: Story<OverflowListProps<string>> = (args) => {
+const Template: StoryFn<OverflowListProps<string>> = (args) => {
   return (
     <ResizableBox>
       <OverflowList {...args} />
@@ -89,19 +92,22 @@ Default.args = {
         <Popover.Trigger className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800 whitespace-nowrap">
           + {items.length} more
         </Popover.Trigger>
-        <Popover.Anchor />
-        <Popover.Content className="bg-white border border-gray-200 shadow-lg w-64 p-2 rounded-lg flex flex-col space-y-2">
-          {items.map((item, index) => {
-            return (
-              <div key={index}>
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800">
-                  {item}
-                </span>
-              </div>
-            );
-          })}
-          <Popover.Arrow fill="white" />
-        </Popover.Content>
+        <Popover.Portal>
+          <Popover.Positioner sideOffset={8}>
+            <Popover.Popup className="bg-white border border-gray-200 shadow-lg w-64 p-2 rounded-lg flex flex-col space-y-2">
+              <Popover.Arrow className="fill-white" />
+              {items.map((item, index) => {
+                return (
+                  <div key={index}>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800">
+                      {item}
+                    </span>
+                  </div>
+                );
+              })}
+            </Popover.Popup>
+          </Popover.Positioner>
+        </Popover.Portal>
       </Popover.Root>
     );
   },
@@ -135,7 +141,7 @@ Avatar.args = {
     return (
       <div
         key={index}
-        className="flex-shrink-0 -ml-1 ring-4 ring-white rounded-full"
+        className="shrink-0 -ml-1 ring-4 ring-white rounded-full"
       >
         <BoringAvatar size={40} variant="beam" name={item} />
       </div>
@@ -143,7 +149,7 @@ Avatar.args = {
   },
   overflowRenderer: (items) => {
     return (
-      <div className="flex-shrink-0 rounded-full w-[40px] h-[40px] bg-gray-200 flex items-center justify-center ml-2 text-xs font-bold text-gray-700">
+      <div className="shrink-0 rounded-full w-[40px] h-[40px] bg-gray-200 flex items-center justify-center ml-2 text-xs font-bold text-gray-700">
         + {items.length}
       </div>
     );
@@ -167,7 +173,7 @@ const Chip: React.FC<TagsInput.RenderTagProps<string>> = ({
           onClick={(e) => {
             onRemove(key);
           }}
-          className="flex-shrink-0 ml-0.5 h-4 w-4 rounded-full inline-flex items-center justify-center text-pink-400 hover:bg-pink-200 hover:text-pink-500 focus:outline-none focus:bg-pink-500 focus:text-white"
+          className="shrink-0 ml-0.5 h-4 w-4 rounded-full inline-flex items-center justify-center text-pink-400 hover:bg-pink-200 hover:text-pink-500 focus:outline-none focus:bg-pink-500 focus:text-white"
         >
           <span className="sr-only">{getTagDisplayValue(tag)}</span>
           <svg
@@ -254,7 +260,7 @@ const TagInputContext = React.createContext<TagInputContext>({
   setIsOpen: () => {},
 });
 
-const TagInputProvider: React.FC = ({ children }) => {
+const TagInputProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
@@ -284,7 +290,7 @@ const ChipInput = React.forwardRef<
   );
 });
 
-const TagInputTemplate: Story<OverflowListProps<string>> = (args) => {
+const TagInputTemplate: StoryFn<OverflowListProps<string>> = (args) => {
   const [items, setItems] = useState(args.items);
 
   return (

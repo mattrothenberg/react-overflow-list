@@ -1,0 +1,33 @@
+name: Release
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+  id-token: write # npm provenance + trusted publishing
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    # Protected environment: required reviewers are configured in
+    # GitHub -> Settings -> Environments -> npm, so this job waits for approval.
+    environment: npm
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+      # `npm stage` needs npm 12+
+      - run: npm install -g npm@12
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+      # Staged publish via npm Trusted Publishing (OIDC): this only uploads a
+      # candidate. Nothing goes live until it is approved with 2FA on
+      # npmjs.com (or `npm stage approve <stage-id>` locally).
+      - run: npm stage publish . --provenance --access public
