@@ -3,7 +3,7 @@ import type { Meta, StoryFn } from '@storybook/react-vite';
 import { Resizable, ResizableProps } from 're-resizable';
 import { MdDragHandle } from 'react-icons/md';
 
-import * as Popover from '@radix-ui/react-popover';
+import { Popover } from '@base-ui/react/popover';
 import BoringAvatar from 'boring-avatars';
 import faker from 'faker';
 import TagsInput from 'react-tagsinput';
@@ -92,19 +92,22 @@ Default.args = {
         <Popover.Trigger className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800 whitespace-nowrap">
           + {items.length} more
         </Popover.Trigger>
-        <Popover.Anchor />
-        <Popover.Content className="bg-white border border-gray-200 shadow-lg w-64 p-2 rounded-lg flex flex-col space-y-2">
-          {items.map((item, index) => {
-            return (
-              <div key={index}>
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800">
-                  {item}
-                </span>
-              </div>
-            );
-          })}
-          <Popover.Arrow fill="white" />
-        </Popover.Content>
+        <Popover.Portal>
+          <Popover.Positioner sideOffset={8}>
+            <Popover.Popup className="bg-white border border-gray-200 shadow-lg w-64 p-2 rounded-lg flex flex-col space-y-2">
+              <Popover.Arrow className="fill-white" />
+              {items.map((item, index) => {
+                return (
+                  <div key={index}>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800">
+                      {item}
+                    </span>
+                  </div>
+                );
+              })}
+            </Popover.Popup>
+          </Popover.Positioner>
+        </Popover.Portal>
       </Popover.Root>
     );
   },
