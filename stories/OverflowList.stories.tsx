@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Meta, Story } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react-vite';
 import { Resizable, ResizableProps } from 're-resizable';
 import { MdDragHandle } from 'react-icons/md';
 
@@ -61,7 +61,7 @@ const ResizableBox: React.FC<ResizableProps> = ({ children, ...rest }) => {
         handleComponent={{
           right: <HandleComponent />,
         }}
-        className="border border-gray-200 py-2 pl-2 pr-4 bg-white overflow-hidden flex-shrink-0"
+        className="border border-gray-200 py-2 pl-2 pr-4 bg-white overflow-hidden shrink-0"
       >
         {children}
       </Resizable>
@@ -69,7 +69,7 @@ const ResizableBox: React.FC<ResizableProps> = ({ children, ...rest }) => {
   );
 };
 
-const Template: Story<OverflowListProps<string>> = (args) => {
+const Template: StoryFn<OverflowListProps<string>> = (args) => {
   return (
     <ResizableBox>
       <OverflowList {...args} />
@@ -135,7 +135,7 @@ Avatar.args = {
     return (
       <div
         key={index}
-        className="flex-shrink-0 -ml-1 ring-4 ring-white rounded-full"
+        className="shrink-0 -ml-1 ring-4 ring-white rounded-full"
       >
         <BoringAvatar size={40} variant="beam" name={item} />
       </div>
@@ -143,7 +143,7 @@ Avatar.args = {
   },
   overflowRenderer: (items) => {
     return (
-      <div className="flex-shrink-0 rounded-full w-[40px] h-[40px] bg-gray-200 flex items-center justify-center ml-2 text-xs font-bold text-gray-700">
+      <div className="shrink-0 rounded-full w-[40px] h-[40px] bg-gray-200 flex items-center justify-center ml-2 text-xs font-bold text-gray-700">
         + {items.length}
       </div>
     );
@@ -167,7 +167,7 @@ const Chip: React.FC<TagsInput.RenderTagProps<string>> = ({
           onClick={(e) => {
             onRemove(key);
           }}
-          className="flex-shrink-0 ml-0.5 h-4 w-4 rounded-full inline-flex items-center justify-center text-pink-400 hover:bg-pink-200 hover:text-pink-500 focus:outline-none focus:bg-pink-500 focus:text-white"
+          className="shrink-0 ml-0.5 h-4 w-4 rounded-full inline-flex items-center justify-center text-pink-400 hover:bg-pink-200 hover:text-pink-500 focus:outline-none focus:bg-pink-500 focus:text-white"
         >
           <span className="sr-only">{getTagDisplayValue(tag)}</span>
           <svg
@@ -284,7 +284,7 @@ const ChipInput = React.forwardRef<
   );
 });
 
-const TagInputTemplate: Story<OverflowListProps<string>> = (args) => {
+const TagInputTemplate: StoryFn<OverflowListProps<string>> = (args) => {
   const [items, setItems] = useState(args.items);
 
   return (
