@@ -2,6 +2,7 @@
  * Dependency-free ports of the handful of `react-use` hooks this library
  * used. Each one mirrors the upstream implementation (react-use@17.3.1) so
  * behaviour is identical; only the dev-mode console warnings were dropped.
+ * `useShallowCompareLayoutEffect` deliberately deviates (see below).
  */
 import {
   DependencyList,
@@ -16,47 +17,9 @@ import {
 const isBrowser = typeof window !== 'undefined';
 const noop = () => {};
 
-const useIsomorphicLayoutEffect = isBrowser ? useLayoutEffect : useEffect;
-
-// react-use/useMount (via useEffectOnce)
-export const useMount = (fn: () => void) => {
-  useEffect(() => {
-    fn();
-  }, []);
-};
-
-// react-use/useFirstMountState
-function useFirstMountState(): boolean {
-  const isFirst = useRef(true);
-  if (isFirst.current) {
-    isFirst.current = false;
-    return true;
-  }
-  return isFirst.current;
-}
-
-// react-use/useUpdateEffect
-export const useUpdateEffect = (
-  effect: EffectCallback,
-  deps?: DependencyList
-) => {
-  const isFirstMount = useFirstMountState();
-  useEffect(() => {
-    if (!isFirstMount) {
-      return effect();
-    }
-    return undefined;
-  }, deps);
-};
-
-// react-use/usePrevious
-export function usePrevious<T>(state: T): T | undefined {
-  const ref = useRef<T>(undefined);
-  useEffect(() => {
-    ref.current = state;
-  });
-  return ref.current;
-}
+export const useIsomorphicLayoutEffect = isBrowser
+  ? useLayoutEffect
+  : useEffect;
 
 // fast-shallow-equal
 const isShallowEqual = (a: any, b: any): boolean => {
@@ -74,8 +37,11 @@ const shallowEqualDepsList = (
   nextDeps: DependencyList
 ) => prevDeps.every((dep, index) => isShallowEqual(dep, nextDeps[index]));
 
-// react-use/useShallowCompareEffect (via useCustomCompareEffect)
-export const useShallowCompareEffect = (
+// react-use/useShallowCompareEffect (via useCustomCompareEffect), but run as
+// a layout effect so the measure/collapse loop settles before the browser
+// paints. As a passive effect each intermediate step can be painted under
+// React 18+ concurrent roots, which shows up as flicker while resizing.
+export const useShallowCompareLayoutEffect = (
   effect: EffectCallback,
   deps: DependencyList
 ) => {
@@ -83,7 +49,7 @@ export const useShallowCompareEffect = (
   if (!ref.current || !shallowEqualDepsList(deps, ref.current)) {
     ref.current = deps;
   }
-  useEffect(effect, ref.current);
+  useIsomorphicLayoutEffect(effect, ref.current);
 };
 
 // react-use/useMeasure

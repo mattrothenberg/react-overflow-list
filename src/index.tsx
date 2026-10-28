@@ -1,10 +1,8 @@
 import React from 'react';
 import {
-  useMount,
+  useIsomorphicLayoutEffect,
   useMeasure,
-  usePrevious,
-  useShallowCompareEffect,
-  useUpdateEffect,
+  useShallowCompareLayoutEffect,
 } from './hooks';
 
 type CollapseDirection = 'start' | 'end';
@@ -49,15 +47,18 @@ export function OverflowList<T>(props: OverflowListProps<T>) {
 
   const spacer = React.useRef<HTMLDivElement>(null);
 
-  useShallowCompareEffect(() => {
+  // Layout effects throughout: repartitioning measures the DOM and may take
+  // several renders to settle, all of which must happen before paint.
+  useShallowCompareLayoutEffect(() => {
     repartition(false);
   }, [state]);
 
-  useMount(() => {
-    repartition(false);
-  });
-
-  useUpdateEffect(() => {
+  const isFirstRender = React.useRef(true);
+  useIsomorphicLayoutEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     setState(() => ({
       overflowDirection: 'none',
       lastOverflowCount: 0,
@@ -120,13 +121,15 @@ export function OverflowList<T>(props: OverflowListProps<T>) {
   };
 
   const [ref, { width }] = useMeasure<any>();
-  const previousWidth = usePrevious(width);
+  const previousWidth = React.useRef(width);
 
-  React.useEffect(() => {
-    if (!previousWidth) return;
+  useIsomorphicLayoutEffect(() => {
+    const prev = previousWidth.current;
+    previousWidth.current = width;
+    if (!prev || width === prev) return;
 
-    repartition(width > previousWidth);
-  }, [width, previousWidth]);
+    repartition(width > prev);
+  }, [width]);
 
   return (
     <WrapperComponent
