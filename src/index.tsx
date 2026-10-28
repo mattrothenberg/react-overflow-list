@@ -49,8 +49,21 @@ export function OverflowList<T>(props: OverflowListProps<T>) {
 
   // Layout effects throughout: repartitioning measures the DOM and may take
   // several renders to settle, all of which must happen before paint.
+  const previousDirection = React.useRef(state.overflowDirection);
   useShallowCompareLayoutEffect(() => {
     repartition(false);
+
+    // A resize has just settled (transition back to 'none'): report the new
+    // overflow if it differs from what it was before the resize started.
+    const { overflowDirection, overflow, lastOverflowCount } = state;
+    if (
+      overflowDirection === 'none' &&
+      overflowDirection !== previousDirection.current &&
+      overflow.length !== lastOverflowCount
+    ) {
+      props.onOverflow?.(overflow.slice());
+    }
+    previousDirection.current = overflowDirection;
   }, [state]);
 
   const isFirstRender = React.useRef(true);
@@ -91,24 +104,35 @@ export function OverflowList<T>(props: OverflowListProps<T>) {
       }));
     } else if (spacer.current.getBoundingClientRect().width < 0.9) {
       setState((state) => {
+        // Can't collapse any further: treat the resize as settled.
+        const settled: OverflowListState<T> =
+          state.overflowDirection === 'none'
+            ? state
+            : { ...state, overflowDirection: 'none' };
         if (state.visible.length <= minVisibleItems!) {
-          return state;
+          return settled;
         }
         const collapseFromStart = collapseFrom === 'start';
         const visible = state.visible.slice();
         const next = collapseFromStart ? visible.shift() : visible.pop();
         if (!next) {
-          return state;
+          return settled;
         }
         const overflow = collapseFromStart
           ? [...state.overflow, next]
           : [next, ...state.overflow];
         return {
           ...state,
-          direction:
+          // Shrink unless a grow is already in progress, in which case keep
+          // shrinking until we fit and then report the overflow.
+          overflowDirection:
             state.overflowDirection === 'none'
               ? 'shrink'
               : state.overflowDirection,
+          lastOverflowCount:
+            state.overflowDirection === 'none'
+              ? state.overflow.length
+              : state.lastOverflowCount,
           overflow,
           visible,
         };

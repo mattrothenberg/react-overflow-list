@@ -100,6 +100,24 @@ describe('OverflowList', () => {
     unmount();
   });
 
+  it('calls onOverflow once the list settles', () => {
+    const onOverflow = vi.fn();
+    const { unmount } = mount(renderList({ minVisibleItems: 2, onOverflow }));
+    expect(onOverflow).toHaveBeenCalledTimes(1);
+    expect(onOverflow).toHaveBeenCalledWith(['Orange', 'Pear']);
+    unmount();
+  });
+
+  it('does not call onOverflow when nothing overflows', () => {
+    vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({
+      width: 1,
+    } as DOMRect);
+    const onOverflow = vi.fn();
+    const { unmount } = mount(renderList({ onOverflow }));
+    expect(onOverflow).not.toHaveBeenCalled();
+    unmount();
+  });
+
   it('respects the tagName prop', () => {
     const { container, unmount } = mount(renderList({ tagName: 'ul' }));
     expect(container.firstElementChild?.tagName).toBe('UL');
